@@ -21,7 +21,7 @@ export class AppService {
     }
 
     for (let i = 0; i < 8; i++) {
-      let n2 = this.getRndInteger(1, 10);
+      const n2 = this.getRndInteger(1, 10);
       n = n1 + n2;
 
       if (n > 100) {
