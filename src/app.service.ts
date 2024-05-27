@@ -35,6 +35,22 @@ export class AppService {
   }
 
   getRandomWord(): string {
-    return '';
+
+    const arr =
+        [
+          "K-means Clustering",
+          "Principal Component Analysis (PCA)",
+          "Ensemble Learning - Random Forests",
+          "-Get Bitcoin Value from KRAKEN oder BINANCE and show the curent BTC Value",
+          "(This is not a word showing it should grab current BTC VALUE from KRAKEN / BINANCE.",
+          "Setting up BTC",
+          "Vectorization",
+          "Simulated Annealing",
+          "Weighting Data",
+          "Mining Data"
+        ];
+
+    const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
+    return randomItem(arr);
   }
 }
