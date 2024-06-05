@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly configService: ConfigService) {}
   private getRndInteger(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
@@ -34,23 +37,36 @@ export class AppService {
     return arr;
   }
 
-  getRandomWord(): string {
+  async getRandomWord(): Promise<string> {
+    const binanceApi = this.configService.get<string>('BINANCEAPI');
+    const arr = [
+      'K-means Clustering',
+      'Principal Component Analysis (PCA)',
+      'Ensemble Learning - Random Forests',
+      '-Get Bitcoin Value from KRAKEN oder BINANCE and show the curent BTC Value',
+      'Setting up BTC',
+      'Vectorization',
+      'Simulated Annealing',
+      'Weighting Data',
+      'Mining Data',
+    ];
 
-    const arr =
-        [
-          "K-means Clustering",
-          "Principal Component Analysis (PCA)",
-          "Ensemble Learning - Random Forests",
-          "-Get Bitcoin Value from KRAKEN oder BINANCE and show the curent BTC Value",
-          "(This is not a word showing it should grab current BTC VALUE from KRAKEN / BINANCE.",
-          "Setting up BTC",
-          "Vectorization",
-          "Simulated Annealing",
-          "Weighting Data",
-          "Mining Data"
-        ];
+    const randomItem = (items) =>
+      items[Math.floor(Math.random() * items.length)];
+    const selectedWord = randomItem(arr);
 
-    const randomItem = (items) => items[Math.floor(Math.random() * items.length)];
-    return randomItem(arr);
+    if (selectedWord !== arr[3]) {
+      return selectedWord;
+    }
+    try {
+      const response = await axios.get(
+        binanceApi + '/api/v3/ticker/price?symbol=BTCUSDT',
+      );
+      const btcPrice = response.data.price;
+      return `${parseFloat(btcPrice)}`;
+    } catch (error) {
+      console.error('Error fetching BTC value:', error);
+      return 'Error fetching BTC value';
+    }
   }
 }

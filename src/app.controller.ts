@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('/word')
-  randomWordGenerator(): string {
+  randomWordGenerator(): Promise<string> {
     return this.appService.getRandomWord();
   }
 }
